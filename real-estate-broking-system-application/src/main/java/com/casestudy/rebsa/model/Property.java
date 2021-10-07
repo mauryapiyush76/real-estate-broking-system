@@ -1,10 +1,13 @@
 package com.casestudy.rebsa.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,7 +16,15 @@ public class Property {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "property_id")
 	private int propertyId;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "owner_id")
+	private Customer customer;
+
+	@Column(name = "available_status")
+	private boolean availableStatus = true;
 
 	@Column(name = "address")
 	private String address;
@@ -22,7 +33,7 @@ public class Property {
 	private String propertyType;
 
 	@Column(name = "floor_space")
-	private String floorSpace;
+	private double floorSpace;
 
 	@Column(name = "city")
 	private String city;
@@ -32,8 +43,13 @@ public class Property {
 
 	@Column(name = "price")
 	private double price;
+	
+	@OneToOne(mappedBy = "property")
+	private Book book;
 
-	public Property(String address, String propertyType, String floorSpace, String city, String offerType,
+	
+
+	public Property(String address, String propertyType, double floorSpace, String city, String offerType,
 			double price) {
 		super();
 		this.address = address;
@@ -72,11 +88,11 @@ public class Property {
 		this.propertyType = propertyType;
 	}
 
-	public String getFloorSpace() {
+	public double getFloorSpace() {
 		return floorSpace;
 	}
 
-	public void setFloorSpace(String floorSpace) {
+	public void setFloorSpace(double floorSpace) {
 		this.floorSpace = floorSpace;
 	}
 
@@ -96,13 +112,36 @@ public class Property {
 		this.offerType = offerType;
 	}
 
-	@Column(name = "price")
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public boolean isAvailableStatus() {
+		return availableStatus;
+	}
+
+	public void setAvailableStatus(boolean availableStatus) {
+		this.availableStatus = availableStatus;
+	}
+
 	public double getPrice() {
 		return price;
 	}
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
 	}
 
 	@Override
@@ -117,7 +156,6 @@ public class Property {
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((floorSpace == null) ? 0 : floorSpace.hashCode());
 		result = prime * result + ((offerType == null) ? 0 : offerType.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(price);
@@ -144,11 +182,6 @@ public class Property {
 			if (other.city != null)
 				return false;
 		} else if (!city.equals(other.city))
-			return false;
-		if (floorSpace == null) {
-			if (other.floorSpace != null)
-				return false;
-		} else if (!floorSpace.equals(other.floorSpace))
 			return false;
 		if (offerType == null) {
 			if (other.offerType != null)

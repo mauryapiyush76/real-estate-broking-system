@@ -5,17 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "brokers")
+public class Broker {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_id")
-	private int customerId;
+	@Column(name="broker_id") 
+	private int brokerId;
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -28,19 +27,12 @@ public class Customer {
 
 	@Column(name = "email")
 	private String email;
-	
-	@OneToOne(mappedBy = "customer")
-	private Property property;
-	
-	@OneToOne(mappedBy = "customer")
-	private Book book;
-	
 
-	public Customer() {
+	public Broker() {
 		super();
 	}
 
-	public Customer(String firstName, String lastName, String mobileNumber, String email) {
+	public Broker(String firstName, String lastName, String mobileNumber, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -49,11 +41,11 @@ public class Customer {
 	}
 
 	public int getCustomerId() {
-		return customerId;
+		return brokerId;
 	}
 
 	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+		this.brokerId = customerId;
 	}
 
 	public String getFirstName() {
@@ -86,22 +78,6 @@ public class Customer {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
-	public Property getProperty() {
-		return property;
-	}
-
-	public void setProperty(Property property) {
-		this.property = property;
-	}
-
-	public Book getBook() {
-		return book;
-	}
-
-	public void setBook(Book book) {
-		this.book = book;
 	}
 
 }
