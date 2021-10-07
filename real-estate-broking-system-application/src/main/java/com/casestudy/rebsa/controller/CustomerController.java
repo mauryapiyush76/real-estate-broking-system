@@ -33,6 +33,22 @@ public class CustomerController {
 		return this.customerRepository.save(customer);
 	}
 
+	// view all Customers
+	@GetMapping("customers")
+	public List<Customer> viewAllCustomers() {
+		return this.customerRepository.findAll();
+	}
+
+	// view Customer by id
+	@GetMapping("customers/{id}")
+	public ResponseEntity<Customer> viewCustomerById(@PathVariable(value = "id") Integer customerId)
+			throws ResourceNotFoundException {
+		Customer customer = customerRepository.findById(customerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this id :: " + customerId));
+		return ResponseEntity.ok().body(customer);
+
+	}
+
 	// update Customer
 	@PutMapping("customers/{id}")
 	public ResponseEntity<Customer> updateCustomer(@PathVariable(value = "id") Integer customerId,
@@ -58,22 +74,6 @@ public class CustomerController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 
-	}
-
-	// view Customer by id
-	@GetMapping("customers/{id}")
-	public ResponseEntity<Customer> viewCustomerById(@PathVariable(value = "id") Integer customerId)
-			throws ResourceNotFoundException {
-		Customer customer = customerRepository.findById(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this id :: " + customerId));
-		return ResponseEntity.ok().body(customer);
-
-	}
-
-	// view all Customers
-	@GetMapping("customers")
-	public List<Customer> viewAllCustomers() {
-		return this.customerRepository.findAll();
 	}
 
 }
