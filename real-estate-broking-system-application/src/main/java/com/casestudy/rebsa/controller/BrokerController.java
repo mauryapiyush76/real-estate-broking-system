@@ -43,9 +43,9 @@ public class BrokerController {
 	@GetMapping("brokers/{id}")
 	public ResponseEntity<Broker> viewBrokerById(@PathVariable(value = "id") Integer brokerId)
 			throws ResourceNotFoundException {
-		Broker customer = brokerRepository.findById(brokerId)
+		Broker broker = brokerRepository.findById(brokerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Broker not found for this id :: " + brokerId));
-		return ResponseEntity.ok().body(customer);
+		return ResponseEntity.ok().body(broker);
 
 	}
 

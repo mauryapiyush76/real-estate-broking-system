@@ -37,6 +37,22 @@ public class Book {
 		this.property = property;
 		this.customer = customer;
 	}
+	
+	public Property getProperty() {
+		return property;
+	}
+
+	public void setProperty(Property property) {
+		this.property = property;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
 	
 }
