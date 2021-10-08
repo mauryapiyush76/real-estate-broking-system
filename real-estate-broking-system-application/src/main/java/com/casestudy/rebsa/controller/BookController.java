@@ -29,7 +29,7 @@ public class BookController {
 
 	// add Booking
 	@PostMapping("bookings")
-	public Book addBroker(@RequestBody Book book) {
+	public Book addBooking(@RequestBody Book book) {
 		return this.bookRepository.save(book);
 	}
 
