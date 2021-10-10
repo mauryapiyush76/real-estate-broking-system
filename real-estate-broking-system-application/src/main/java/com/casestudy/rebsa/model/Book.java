@@ -16,34 +16,25 @@ public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="book_id") 
+	@Column(name = "book_id")
 	private int bookId;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "property_id")
+
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "property_id", unique = true)
 	private Property property;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "owner_id")
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "owner_id", unique = true)
 	private Customer customer;
-	
+
 	public Book() {
 		super();
 	}
-	
-	public Book(int bookId, Property property, Customer customer) {
+
+	public Book(Property property, Customer customer) {
 		super();
-		this.bookId = bookId;
 		this.property = property;
 		this.customer = customer;
-	}
-	
-	public Property getProperty() {
-		return property;
-	}
-
-	public void setProperty(Property property) {
-		this.property = property;
 	}
 
 	public Customer getCustomer() {
@@ -54,5 +45,11 @@ public class Book {
 		this.customer = customer;
 	}
 
-	
+	public Property getProperty() {
+		return property;
+	}
+
+	public void setProperty(Property property) {
+		this.property = property;
+	}
 }

@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "properties")
@@ -23,7 +26,7 @@ public class Property {
 	@JoinColumn(name = "owner_id")
 	private Customer customer;
 
-	@Column(name = "available_status")
+	@Column(name = "available_status", columnDefinition = "boolean default true")
 	private boolean availableStatus = true;
 
 	@Column(name = "address")
@@ -43,11 +46,11 @@ public class Property {
 
 	@Column(name = "price")
 	private double price;
-	
+
+	@JsonIgnore
+	@Transient
 	@OneToOne(mappedBy = "property")
 	private Book book;
-
-	
 
 	public Property(String address, String propertyType, double floorSpace, String city, String offerType,
 			double price) {
@@ -135,7 +138,7 @@ public class Property {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
+
 	public Book getBook() {
 		return book;
 	}

@@ -1,6 +1,5 @@
 package com.casestudy.rebsa.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,62 +17,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.casestudy.rebsa.exception.ResourceNotFoundException;
 import com.casestudy.rebsa.model.Broker;
-import com.casestudy.rebsa.repository.BrokerRepository;
+import com.casestudy.rebsa.service.BrokerService;
 
 @RestController
 @RequestMapping("/api/v1/")
 public class BrokerController {
 
 	@Autowired
-	private BrokerRepository brokerRepository;
+	private BrokerService brokerService;
 
-	// add Broker
 	@PostMapping("brokers")
 	public Broker addBroker(@RequestBody Broker broker) {
-		return this.brokerRepository.save(broker);
+		return brokerService.addBroker(broker);
 	}
 
-	// view all Brokers
 	@GetMapping("brokers")
 	public List<Broker> viewAllBrokers() {
-		return this.brokerRepository.findAll();
+		return brokerService.viewAllBrokers();
 	}
 
-	// view Broker by id
 	@GetMapping("brokers/{id}")
 	public ResponseEntity<Broker> viewBrokerById(@PathVariable(value = "id") Integer brokerId)
 			throws ResourceNotFoundException {
-		Broker broker = brokerRepository.findById(brokerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Broker not found for this id :: " + brokerId));
-		return ResponseEntity.ok().body(broker);
-
+		return brokerService.viewBrokerById(brokerId);
 	}
 
-	// update Broker
 	@PutMapping("brokers/{id}")
 	public ResponseEntity<Broker> updateBroker(@PathVariable(value = "id") Integer brokerId,
 			@Validated @RequestBody Broker brokerDetails) throws ResourceNotFoundException {
-		Broker broker = brokerRepository.findById(brokerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Broker not found for this id :: " + brokerId));
-		broker.setFirstName(brokerDetails.getFirstName());
-		broker.setLastName(brokerDetails.getLastName());
-		broker.setEmail(brokerDetails.getEmail());
-		broker.setMobileNumber(brokerDetails.getMobileNumber());
-
-		return ResponseEntity.ok(this.brokerRepository.save(broker));
+		return brokerService.updateBroker(brokerId, brokerDetails);
 	}
 
-	// remove Broker
 	@DeleteMapping("brokers/{id}")
 	public Map<String, Boolean> removeBroker(@PathVariable(value = "id") Integer brokerId)
 			throws ResourceNotFoundException {
-		Broker broker = brokerRepository.findById(brokerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Broker not found for this id :: " + brokerId));
-		this.brokerRepository.delete(broker);
-		Map<String, Boolean> response = new HashMap<String, Boolean>();
-		response.put("deleted", Boolean.TRUE);
-		return response;
-
+		return brokerService.removeBroker(brokerId);
 	}
 
 }

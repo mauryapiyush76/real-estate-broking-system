@@ -1,6 +1,5 @@
 package com.casestudy.rebsa.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,62 +17,48 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.casestudy.rebsa.exception.ResourceNotFoundException;
 import com.casestudy.rebsa.model.Customer;
-import com.casestudy.rebsa.repository.CustomerRepository;
+import com.casestudy.rebsa.model.Book;
+import com.casestudy.rebsa.service.CustomerService;
 
 @RestController
 @RequestMapping("/api/v1/")
 public class CustomerController {
 
 	@Autowired
-	private CustomerRepository customerRepository;
+	CustomerService customerService;
 
-	// add Customer
 	@PostMapping("customers")
 	public Customer addCustomer(@RequestBody Customer customer) {
-		return this.customerRepository.save(customer);
+		return customerService.addCustomer(customer);
 	}
 
-	// view all Customers
 	@GetMapping("customers")
 	public List<Customer> viewAllCustomers() {
-		return this.customerRepository.findAll();
+		return customerService.viewAllCustomers();
 	}
 
-	// view Customer by id
 	@GetMapping("customers/{id}")
 	public ResponseEntity<Customer> viewCustomerById(@PathVariable(value = "id") Integer customerId)
 			throws ResourceNotFoundException {
-		Customer customer = customerRepository.findById(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this id :: " + customerId));
-		return ResponseEntity.ok().body(customer);
-
+		return customerService.viewCustomerById(customerId);
 	}
 
-	// update Customer
 	@PutMapping("customers/{id}")
 	public ResponseEntity<Customer> updateCustomer(@PathVariable(value = "id") Integer customerId,
 			@Validated @RequestBody Customer customerDetails) throws ResourceNotFoundException {
-		Customer customer = customerRepository.findById(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this id :: " + customerId));
-		customer.setFirstName(customerDetails.getFirstName());
-		customer.setLastName(customerDetails.getLastName());
-		customer.setEmail(customerDetails.getEmail());
-		customer.setMobileNumber(customerDetails.getMobileNumber());
-
-		return ResponseEntity.ok(this.customerRepository.save(customer));
+		return customerService.updateCustomer(customerId, customerDetails);
 	}
 
-	// remove Customer
 	@DeleteMapping("customers/{id}")
 	public Map<String, Boolean> removeCustomer(@PathVariable(value = "id") Integer customerId)
 			throws ResourceNotFoundException {
-		Customer customer = customerRepository.findById(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this id :: " + customerId));
-		this.customerRepository.delete(customer);
-		Map<String, Boolean> response = new HashMap<String, Boolean>();
-		response.put("deleted", Boolean.TRUE);
-		return response;
+		return customerService.removeCustomer(customerId);
 
 	}
 
+	@PostMapping("customers/{customerId}/properties/{propertyId}")
+	public Book bookPropertyById(@PathVariable(value = "customerId") Integer customerId,
+			@PathVariable(value = "propertyId") Integer propertyId) throws ResourceNotFoundException {
+		return customerService.bookPropertyById(customerId, propertyId);
+	}
 }

@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "customers")
@@ -28,13 +31,15 @@ public class Customer {
 
 	@Column(name = "email")
 	private String email;
-	
+
+	@JsonIgnore
 	@OneToOne(mappedBy = "customer")
 	private Property property;
-	
+
+	@JsonIgnore
+	@Transient
 	@OneToOne(mappedBy = "customer")
 	private Book book;
-	
 
 	public Customer() {
 		super();
@@ -87,14 +92,6 @@ public class Customer {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public Property getProperty() {
-		return property;
-	}
-
-	public void setProperty(Property property) {
-		this.property = property;
-	}
 
 	public Book getBook() {
 		return book;
@@ -104,4 +101,11 @@ public class Customer {
 		this.book = book;
 	}
 
+	public Property getProperty() {
+		return property;
+	}
+
+	public void setProperty(Property property) {
+		this.property = property;
+	}
 }
