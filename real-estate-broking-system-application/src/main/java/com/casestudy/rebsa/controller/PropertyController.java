@@ -62,4 +62,5 @@ public class PropertyController {
 	public List<Property> search(@RequestParam(value = "search") String search) {
 		return propertyService.search(search);
 	}
+	
 }

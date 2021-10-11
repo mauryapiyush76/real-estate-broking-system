@@ -71,7 +71,11 @@ public class CustomerService {
 				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this id :: " + customerId));
 		Property property = propertyRepository.findById(propertyId)
 				.orElseThrow(() -> new ResourceNotFoundException("Property not found for this id :: " + propertyId));
+		if(property.isAvailableStatus()) {
 		property.setAvailableStatus(false);
+		} else {
+			throw new ResourceNotFoundException("Property not available for booking");
+		}
 		property.setCustomer(customer);
 		this.propertyRepository.save(property);
 		Book book = new Book(property, customer);

@@ -53,9 +53,12 @@ public class BookService {
 	public Map<String, Boolean> removeBooking(Integer bookId) throws ResourceNotFoundException {
 		Book book = bookRepository.findById(bookId)
 				.orElseThrow(() -> new ResourceNotFoundException("Booking not found for this id :: " + bookId));
-		Property property = book.getProperty();
-		property.setCustomer(null);
-		this.propertyRepository.save(property);
+		if (book.getProperty() != null) {
+			Property property = book.getProperty();
+			property.setCustomer(null);
+			this.propertyRepository.save(property);
+
+		}
 		this.bookRepository.delete(book);
 		Map<String, Boolean> response = new HashMap<String, Boolean>();
 		response.put("deleted", Boolean.TRUE);
