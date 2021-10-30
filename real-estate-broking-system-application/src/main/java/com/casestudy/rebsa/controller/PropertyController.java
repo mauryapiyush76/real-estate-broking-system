@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.casestudy.rebsa.exception.ResourceNotFoundException;
 import com.casestudy.rebsa.model.Property;
 import com.casestudy.rebsa.service.PropertyService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/")
 public class PropertyController {
@@ -52,7 +54,7 @@ public class PropertyController {
 	}
 
 	@DeleteMapping("properties/{id}")
-	public Map<String, Boolean> removeProperty(@PathVariable(value = "id") Integer propertyId)
+	public ResponseEntity<Map<String, Boolean>> removeProperty(@PathVariable(value = "id") Integer propertyId)
 			throws ResourceNotFoundException {
 		return propertyService.removeProperty(propertyId);
 	}

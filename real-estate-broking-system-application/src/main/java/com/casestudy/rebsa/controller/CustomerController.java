@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.casestudy.rebsa.model.Customer;
 import com.casestudy.rebsa.model.Book;
 import com.casestudy.rebsa.service.CustomerService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/")
 public class CustomerController {
@@ -50,7 +52,7 @@ public class CustomerController {
 	}
 
 	@DeleteMapping("customers/{id}")
-	public Map<String, Boolean> removeCustomer(@PathVariable(value = "id") Integer customerId)
+	public ResponseEntity<Map<String, Boolean>> removeCustomer(@PathVariable(value = "id") Integer customerId)
 			throws ResourceNotFoundException {
 		return customerService.removeCustomer(customerId);
 

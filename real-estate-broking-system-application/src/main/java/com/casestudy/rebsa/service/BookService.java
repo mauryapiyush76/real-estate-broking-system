@@ -50,7 +50,7 @@ public class BookService {
 		return ResponseEntity.ok(this.bookRepository.save(book));
 	}
 
-	public Map<String, Boolean> removeBooking(Integer bookId) throws ResourceNotFoundException {
+	public ResponseEntity<Map<String, Boolean>> removeBooking(Integer bookId) throws ResourceNotFoundException {
 		Book book = bookRepository.findById(bookId)
 				.orElseThrow(() -> new ResourceNotFoundException("Booking not found for this id :: " + bookId));
 		if (book.getProperty() != null) {
@@ -62,7 +62,7 @@ public class BookService {
 		this.bookRepository.delete(book);
 		Map<String, Boolean> response = new HashMap<String, Boolean>();
 		response.put("deleted", Boolean.TRUE);
-		return response;
+		return ResponseEntity.ok(response);
 
 	}
 }

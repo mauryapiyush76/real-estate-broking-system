@@ -57,13 +57,13 @@ public class CustomerService {
 		return ResponseEntity.ok(this.customerRepository.save(customer));
 	}
 
-	public Map<String, Boolean> removeCustomer(Integer customerId) throws ResourceNotFoundException {
+	public ResponseEntity<Map<String, Boolean>> removeCustomer(Integer customerId) throws ResourceNotFoundException {
 		Customer customer = customerRepository.findById(customerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Customer not found for this id :: " + customerId));
 		this.customerRepository.delete(customer);
 		Map<String, Boolean> response = new HashMap<String, Boolean>();
 		response.put("deleted", Boolean.TRUE);
-		return response;
+		return ResponseEntity.ok(response);
 	}
 
 	public Book bookPropertyById(Integer customerId, Integer propertyId) throws ResourceNotFoundException {

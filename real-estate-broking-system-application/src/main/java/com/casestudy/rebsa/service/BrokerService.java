@@ -50,14 +50,14 @@ public class BrokerService {
 		return ResponseEntity.ok(this.brokerRepository.save(broker));
 	}
 	
-	public Map<String, Boolean> removeBroker(Integer brokerId)
+	public ResponseEntity<Map<String, Boolean>> removeBroker(Integer brokerId)
 			throws ResourceNotFoundException {
 		Broker broker = brokerRepository.findById(brokerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Broker not found for this id :: " + brokerId));
 		this.brokerRepository.delete(broker);
 		Map<String, Boolean> response = new HashMap<String, Boolean>();
 		response.put("deleted", Boolean.TRUE);
-		return response;
+		return ResponseEntity.ok(response);
 
 	}
 }

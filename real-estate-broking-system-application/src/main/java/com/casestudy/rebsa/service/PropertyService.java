@@ -62,7 +62,7 @@ public class PropertyService {
 		return ResponseEntity.ok(this.propertyRepository.save(property));
 	}
 
-	public Map<String, Boolean> removeProperty(Integer propertyId) throws ResourceNotFoundException {
+	public ResponseEntity<Map<String, Boolean>> removeProperty(Integer propertyId) throws ResourceNotFoundException {
 		Property property = propertyRepository.findById(propertyId)
 				.orElseThrow(() -> new ResourceNotFoundException("Property not found for this id :: " + propertyId));
 		if (property.getCustomer() != null) {
@@ -72,7 +72,7 @@ public class PropertyService {
 		this.propertyRepository.delete(property);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
-		return response;
+		return ResponseEntity.ok(response);
 	}
 
 	public List<Property> search(String search) {
