@@ -52,4 +52,14 @@ public class Book {
 	public void setProperty(Property property) {
 		this.property = property;
 	}
+
+	public int getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
+	}
+	
+	
 }
